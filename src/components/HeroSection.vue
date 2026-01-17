@@ -16,23 +16,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="h-screen w-full flex flex-col justify-start md:justify-center items-center relative overflow-hidden bg-cyber-void pt-32 md:pt-0">
-    <div class="hero-content z-10 text-center flex flex-col items-center">
-      <div class="flex items-center gap-4 mb-10 md:mb-6">
+  <section class="h-screen w-full flex flex-col justify-center items-center relative overflow-hidden bg-cyber-void">
+    <div class="hero-content z-10 text-center flex flex-col items-center justify-between md:justify-center h-[60dvh] md:h-auto py-12 md:py-0">
+      <div class="flex items-center gap-4">
         <div class="w-2 h-2 bg-cyber-green rounded-full animate-pulse"></div>
         <h2 class="text-cyber-cyan tracking-[0.5em] text-xs md:text-sm uppercase font-mono">
           <DecodedText text="SYSTEM ONLINE // BE-2026" />
         </h2>
       </div>
       
-      <h1 class="text-[18vw] md:text-[15vw] leading-[0.8] font-display font-bold uppercase text-cyber-white mb-4 md:mb-0">
-        <DecodedText text="NEAL" />
-      </h1>
-      <h1 class="text-[18vw] md:text-[15vw] leading-[0.8] font-display font-bold uppercase text-transparent stroke-text mb-12 md:mb-0">
-        WICKE
-      </h1>
+      <div class="flex flex-col items-center">
+        <h1 class="text-[18vw] md:text-[15vw] leading-[0.8] font-display font-bold uppercase text-cyber-white">
+          <DecodedText text="NEAL" />
+        </h1>
+        <h1 class="text-[18vw] md:text-[15vw] leading-[0.8] font-display font-bold uppercase text-transparent stroke-text">
+          WICKE
+        </h1>
+      </div>
       
-      <p class="mt-4 md:mt-8 max-w-[280px] md:max-w-md text-center text-cyber-white/60 font-mono text-xs md:text-sm leading-relaxed px-4">
+      <p class="max-w-[280px] md:max-w-md text-center text-cyber-white/60 font-mono text-xs md:text-sm leading-relaxed px-4 md:mt-8">
         Full Stack Engineer crafting high-performance digital architecture.
         Based in Belgium.
       </p>
