@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, defineAsyncComponent } from 'vue'
+import { onMounted, ref, defineAsyncComponent, onUnmounted } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { PhCaretRight } from '@phosphor-icons/vue'
@@ -7,6 +7,7 @@ import { PhCaretRight } from '@phosphor-icons/vue'
 gsap.registerPlugin(ScrollTrigger)
 
 const container = ref(null)
+const wrapper = ref(null)
 
 // Lazy load 3D scenes
 const SceneWeb = defineAsyncComponent(() => import('./3d/SceneWeb.vue'))
@@ -64,40 +65,76 @@ const projects = [
 ]
 
 onMounted(() => {
-  const sections = gsap.utils.toArray('.project-panel')
+  const mm = gsap.matchMedia()
   
-  gsap.to(sections, {
-    xPercent: -100 * (sections.length - 1),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: container.value,
-      pin: true,
-      scrub: 1,
-      end: () => "+=" + container.value.offsetWidth
+  mm.add("(min-width: 768px)", () => {
+    // Desktop: Horizontal Scroll
+    if (wrapper.value) {
+      wrapper.value.style.width = `${projects.length * 100}%`
     }
+    
+    const sections = gsap.utils.toArray('.project-panel')
+    
+    gsap.to(sections, {
+      xPercent: -100 * (sections.length - 1),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: container.value,
+        pin: true,
+        scrub: 1,
+        end: () => "+=" + container.value.offsetWidth,
+        invalidateOnRefresh: true
+      }
+    })
   })
+
+  // Mobile: Normal Vertical Scroll
+  mm.add("(max-width: 767px)", () => {
+    if (wrapper.value) {
+      wrapper.value.style.width = '100%'
+    }
+    
+    const panels = gsap.utils.toArray('.project-panel')
+    panels.forEach((panel) => {
+      gsap.from(panel.querySelector('.glass-panel'), {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: panel,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse'
+        }
+      })
+    })
+  })
+})
+
+onUnmounted(() => {
+  // matchMedia handles cleanups automatically
 })
 </script>
 
 <template>
-  <section ref="container" class="h-screen w-full flex overflow-x-hidden relative bg-cyber-void">
-    <div class="absolute top-10 left-10 z-20 mix-blend-difference">
-      <h2 class="text-4xl font-display font-bold uppercase text-cyber-white">Technical Capabilities</h2>
+  <section ref="container" class="min-h-dvh md:h-screen w-full flex flex-col md:flex-row overflow-x-hidden relative bg-cyber-void">
+    <div class="static md:absolute top-6 md:top-10 left-6 md:left-10 z-20 mix-blend-difference p-6 md:p-0">
+      <h2 class="text-2xl md:text-4xl font-display font-bold uppercase text-cyber-white">Technical Capabilities</h2>
       <div class="w-12 h-1 bg-cyber-cyan mt-2"></div>
     </div>
 
-    <!-- Horizontal Scroll Wrapper -->
-    <div class="flex flex-nowrap h-full" :style="{ width: `${projects.length * 100}%` }">
+    <!-- Scroll Wrapper -->
+    <div ref="wrapper" class="flex flex-col md:flex-row md:flex-nowrap h-full w-full md:w-auto">
       <div 
         v-for="project in projects" 
         :key="project.id" 
-        class="project-panel w-screen h-full flex items-center justify-center p-8 md:p-20 border-r border-white/5 bg-cyber-void relative"
+        class="project-panel w-full md:w-screen h-auto md:h-full flex items-center justify-center p-6 md:p-20 border-b md:border-b-0 md:border-r border-white/5 bg-cyber-void relative"
       >
         <!-- Project Card -->
-        <div class="glass-panel w-full max-w-4xl h-[60vh] flex flex-col md:flex-row relative group overflow-hidden hover:border-cyber-cyan/30 transition-colors duration-500">
+        <div class="glass-panel w-full max-w-4xl min-h-[70vh] md:h-[60vh] flex flex-col md:flex-row relative group overflow-hidden hover:border-cyber-cyan/30 transition-colors duration-500">
           
           <!-- Image Placeholder (Now 3D Scene) -->
-          <div class="w-full md:w-1/2 h-full bg-cyber-gray relative overflow-hidden">
+          <div class="w-full md:w-1/2 h-[40vh] md:h-full bg-cyber-gray relative overflow-hidden">
             <div class="absolute inset-0 bg-cyber-gradient opacity-10 pointer-events-none"></div>
             
             <div class="absolute inset-0 z-10">
@@ -105,31 +142,31 @@ onMounted(() => {
             </div>
             
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span class="text-[10rem] font-display font-bold text-white/5">{{ project.id }}</span>
+              <span class="text-8xl md:text-[10rem] font-display font-bold text-white/5">{{ project.id }}</span>
             </div>
           </div>
           
           <!-- Content -->
-          <div class="w-full md:w-1/2 h-full p-8 md:p-12 flex flex-col justify-between relative z-20 bg-cyber-void/80 md:bg-transparent backdrop-blur-md md:backdrop-blur-none">
+          <div class="w-full md:w-1/2 h-auto md:h-full p-8 md:p-12 flex flex-col justify-between relative z-20 bg-cyber-void/80 md:bg-transparent backdrop-blur-md md:backdrop-blur-none">
             <div>
               <div class="flex items-center gap-4 mb-4">
-                <span class="px-3 py-1 border border-white/20 rounded-full text-xs font-mono text-cyber-white/60">{{ project.year }}</span>
-                <span class="px-3 py-1 border border-cyber-cyan/20 rounded-full text-xs font-mono text-cyber-cyan">{{ project.category }}</span>
+                <span class="px-3 py-1 border border-white/20 rounded-full text-[10px] md:text-xs font-mono text-cyber-white/60">{{ project.year }}</span>
+                <span class="px-3 py-1 border border-cyber-cyan/20 rounded-full text-[10px] md:text-xs font-mono text-cyber-cyan">{{ project.category }}</span>
               </div>
-              <h3 class="text-4xl md:text-5xl font-display font-bold uppercase mb-6 leading-none text-cyber-white">{{ project.name }}</h3>
+              <h3 class="text-3xl md:text-5xl font-display font-bold uppercase mb-4 md:mb-6 leading-none text-cyber-white">{{ project.name }}</h3>
               
-              <p class="text-cyber-white/80 mb-4 leading-relaxed font-light">
+              <p class="text-cyber-white/80 mb-6 md:mb-4 text-sm md:text-base leading-relaxed font-light">
                 {{ project.description }}
               </p>
               
-              <p class="font-mono text-sm text-cyber-cyan border-l-2 border-cyber-cyan pl-4 py-1">
+              <p class="font-mono text-xs md:text-sm text-cyber-cyan border-l-2 border-cyber-cyan pl-4 py-1">
                 {{ project.stack }}
               </p>
             </div>
             
-            <button class="flex items-center gap-2 text-cyber-white hover:text-cyber-cyan transition-colors group/btn mt-6">
-              <span class="uppercase tracking-widest text-sm font-bold">Consult</span>
-              <PhCaretRight :size="20" class="group-hover/btn:translate-x-1 transition-transform" />
+            <button class="flex items-center gap-2 text-cyber-white hover:text-cyber-cyan transition-colors group/btn mt-8 md:mt-6">
+              <span class="uppercase tracking-widest text-xs md:text-sm font-bold">Consult</span>
+              <PhCaretRight :size="18" class="group-hover/btn:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>

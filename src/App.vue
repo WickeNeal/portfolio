@@ -33,7 +33,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative w-full min-h-screen bg-cyber-void text-cyber-white selection:bg-cyber-green selection:text-black">
+  <div class="relative w-full min-h-screen md:min-h-screen bg-cyber-void text-cyber-white selection:bg-cyber-green selection:text-black">
     <TheNoise />
     <TheCursor />
     

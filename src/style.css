@@ -15,9 +15,12 @@ body {
   color: var(--text-color);
   font-family: 'Clash Display', sans-serif;
   overflow-x: hidden;
-  cursor: none; /* Custom cursor takes over */
   -webkit-font-smoothing: antialiased;
   margin: 0;
+}
+
+body.has-custom-cursor {
+  cursor: none;
 }
 
 /* Custom Scrollbar */

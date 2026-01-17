@@ -6,6 +6,13 @@ const cursor = ref(null)
 const follower = ref(null)
 
 onMounted(() => {
+  // Check if touch device
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    return
+  }
+
+  document.body.classList.add('has-custom-cursor')
+
   // Center initially
   gsap.set([cursor.value, follower.value], { xPercent: -50, yPercent: -50 })
 
