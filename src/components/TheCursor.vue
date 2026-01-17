@@ -66,6 +66,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="cursor" class="fixed top-0 left-0 w-2 h-2 bg-cyber-cyan rounded-full pointer-events-none z-[9999] mix-blend-difference"></div>
-  <div ref="follower" class="fixed top-0 left-0 w-8 h-8 border border-cyber-cyan rounded-full pointer-events-none z-[9998] mix-blend-difference opacity-50"></div>
+  <div class="hidden md:block">
+    <div ref="cursor" class="fixed top-0 left-0 w-2 h-2 bg-cyber-cyan rounded-full pointer-events-none z-[9999] mix-blend-difference"></div>
+    <div ref="follower" class="fixed top-0 left-0 w-8 h-8 border border-cyber-cyan rounded-full pointer-events-none z-[9998] mix-blend-difference opacity-50"></div>
+  </div>
 </template>
