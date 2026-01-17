@@ -16,8 +16,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="h-screen w-full flex flex-col justify-center items-center relative overflow-hidden bg-cyber-void">
-    <div class="hero-content z-10 text-center flex flex-col items-center justify-between md:justify-center h-[60dvh] md:h-auto py-12 md:py-0">
+  <section class="h-screen w-full flex flex-col justify-start md:justify-center items-center relative overflow-hidden bg-cyber-void pt-20 md:pt-0">
+    <div class="hero-content z-10 text-center flex flex-col items-center justify-between md:justify-center h-[70dvh] md:h-auto">
       <div class="flex items-center gap-4">
         <div class="w-2 h-2 bg-cyber-green rounded-full animate-pulse"></div>
         <h2 class="text-cyber-cyan tracking-[0.5em] text-xs md:text-sm uppercase font-mono">
